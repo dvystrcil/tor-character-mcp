@@ -1,0 +1,31 @@
+# ImageUpdater CR for tor-character-mcp.
+#
+# Distributed per architecture/applicationset-patterns.md (in homelab
+# repo): IU CRDs live next to their app's deploy manifests, enrolled
+# via the image-updater-apps ApplicationSet in argocd-projects.
+#
+# Watches harbor.sirddail.net/ai/tor-character-mcp for semver release
+# tags (bare X.Y.Z; see [[feedback_git_tag_vs_image_tag_convention]]).
+# Tags are created by docker-release.yaml in tor-character-mcp-docker
+# on every GitHub release publish.
+apiVersion: argocd-image-updater.argoproj.io/v1alpha1
+kind: ImageUpdater
+metadata:
+  name: tor-character-mcp-iu
+spec:
+  namespace: argocd
+  applicationRefs:
+    - namePattern: "tor-character-mcp"
+      useAnnotations: false
+      images:
+        - alias: "tor-character-mcp"
+          imageName: "harbor.sirddail.net/ai/tor-character-mcp:0.x"
+          commonUpdateSettings:
+            pullSecret: "pullsecret:tor-character-mcp/tor-character-mcp-harbor-pull"
+            forceUpdate: false
+      writeBackConfig:
+        method: "git"
+        gitConfig:
+          repository: "https://github.com/dvystrcil/tor-character-mcp.git"
+          branch: "main"
+          writeBackTarget: "kustomization:/base"
