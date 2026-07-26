@@ -28,4 +28,4 @@ spec:
         gitConfig:
           repository: "https://github.com/dvystrcil/tor-character-mcp.git"
           branch: "main"
-          writeBackTarget: "kustomization:/base"
+          writeBackTarget: "kustomization:/overlays"
