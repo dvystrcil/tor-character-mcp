@@ -13,7 +13,6 @@ kind: ImageUpdater
 metadata:
   name: tor-character-mcp-iu
 spec:
-  namespace: argocd
   applicationRefs:
     - namePattern: "tor-character-mcp"
       useAnnotations: false
